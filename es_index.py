@@ -66,7 +66,7 @@ def index_article(url, source):
         if len(current_doc['text'])+ len(child_text) > 512:
             current_doc['text'] = current_doc['text'].strip()
             docs.append(current_doc)
-            current_doc = {"url": URL, "text":"", "title":title_text, "figures.url":[], "figures.text":[]}
+            current_doc = {"source":source, "url": url, "text":"", "title":title_text, "figures.url":[], "figures.text":[]}
         current_doc['text'] = current_doc['text'] + " " + child_text
         figstart = child_text.find("Figure")
         if figstart != -1:
