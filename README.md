@@ -18,6 +18,10 @@ export OPENAI_MODEL=""
 export OPENAI_API_VERSION=""
 ```
 
+## Install
+
+You'll need Python3.x. Then `pip install -r requirements.txt`.
+
 ## Elasticsearch Setup
 Ensure the following indices and pipelines are defined:
 
@@ -133,8 +137,14 @@ curl -XPUT "$ELASTICSEARCH_URL/_ingest/pipeline/articles-embeddings" -H "kbn-xsr
 }'
 ```
 
-## Use
+## Indexing
 
 ```
 python main.py --crawl_url (URL TO CRAWL) --crawl_aref_class (CLASS OF ARTICLES) --source (SOURCE OF DOCUMENTS) --article_section_class (CLASS OF BODY IN ARTICLES)
+```
+
+## UI
+
+```
+streamlit run ui.py
 ```
