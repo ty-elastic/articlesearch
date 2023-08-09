@@ -3,7 +3,6 @@ import streamlit as st
 import openai
 import tiktoken
 import time
-import tiktoken
 
 openai.api_type = "azure"
 openai.api_key = os.environ['OPENAI_API_KEY']

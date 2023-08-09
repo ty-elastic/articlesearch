@@ -3,3 +3,4 @@ openai
 elasticsearch
 tiktoken
 bs4
+nltk

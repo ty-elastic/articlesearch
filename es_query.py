@@ -4,22 +4,6 @@ from elasticsearch.client import MlClient
 
 ARTICLES_INDEX="articles"
 
-def ask_question(context, question):
-
-    url = f"https://{os.getenv('ES_USER')}:{os.getenv('ES_PASS')}@{os.getenv('ES_ENDPOINT')}:443"
-    with Elasticsearch([url], verify_certs=True) as es:
-        ml = MlClient(es)
-
-        config = {"question_answering": {
-        "question": question
-        }}
-
-        res = ml.infer_trained_model(model_id="deepset__roberta-base-squad2", docs=[{ "text_field": context}], inference_config=config)
-        print(res)
-        if len(res['inference_results']) > 0:
-            return res['inference_results'][0]['predicted_value']
-
-
 def get_sources():
     url = f"https://{os.getenv('ES_USER')}:{os.getenv('ES_PASS')}@{os.getenv('ES_ENDPOINT')}:443"
     with Elasticsearch([url], verify_certs=True) as es:
