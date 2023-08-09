@@ -18,7 +18,7 @@ def add_docs(docs):
             batch = []
     bulkLoadIndexPipeline(batch,ARTICLES_INDEX,ARTICLES_PIPELINE)
 
-def dk_index_article(url, source):
+def index_article_with_figures(url, source):
 
 
     page = requests.get(url, timeout=30, headers=HTTP_HEADERS)
@@ -46,9 +46,6 @@ def dk_index_article(url, source):
              if res != None:
                 print("F"+res.group())
                 figures[res.group()] = fig
-        # if text.startswith("Figure") == True:
-        #     print("yeah")
-        #     figures[text] = last_image
 
     print(figures)
 
@@ -83,10 +80,7 @@ def dk_index_article(url, source):
     print(docs)
     return docs
 
-
 def index_article(url, source):
-
-
     page = requests.get(url, timeout=30, headers=HTTP_HEADERS)
     #print(page)
     soup = BeautifulSoup(page.content, "html.parser")
@@ -104,7 +98,6 @@ def index_article(url, source):
         child_text = child.text.strip()
         current_doc = {"source":source, "url": url, "text":child_text, "title":title_text}
         docs.append(current_doc)
-
 
     print(docs)
     return docs
