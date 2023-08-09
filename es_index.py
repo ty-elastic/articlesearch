@@ -18,7 +18,7 @@ def add_docs(docs):
             batch = []
     bulkLoadIndexPipeline(batch,ARTICLES_INDEX,ARTICLES_PIPELINE)
 
-def index_article(url, source):
+def dk_index_article(url, source):
 
 
     page = requests.get(url, timeout=30, headers=HTTP_HEADERS)
@@ -80,7 +80,32 @@ def index_article(url, source):
             
             #print(current_doc['figure'])
 
-    
+    print(docs)
+    return docs
+
+
+def index_article(url, source):
+
+
+    page = requests.get(url, timeout=30, headers=HTTP_HEADERS)
+    #print(page)
+    soup = BeautifulSoup(page.content, "html.parser")
+    results = soup.find_all("section", {"class": "release-body"})
+
+    title = soup.find("title")
+    title_text =title.text.strip()
+    #print(title_text)
+
+    children = results[0].findChildren("p")
+    docs = []
+    current_doc = {"source":source, "url": url, "text":"", "title":title_text, "figures.url":[], "figures.text":[]}
+
+    for child in children:
+        child_text = child.text.strip()
+        current_doc = {"source":source, "url": url, "text":child_text, "title":title_text}
+        docs.append(current_doc)
+
+
     print(docs)
     return docs
 

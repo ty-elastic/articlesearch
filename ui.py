@@ -5,7 +5,6 @@ import urllib.parse
 
 ELASTIC_LOGO = 'https://images.contentstack.io/v3/assets/bltefdd0b53724fa2ce/blt601c406b0b5af740/620577381692951393fdf8d6/elastic-logo-cluster.svg'
 APP_NAME = "Content Search Demo"
-PROMPT_FAILED = "I'm unable to answer the question based on the results."
 
 st.set_page_config(layout="wide", page_title=APP_NAME)
 
@@ -31,21 +30,18 @@ with st.form("chat_form"):
                 with cols[i]:
                     st.image(fig['url'], caption=fig['caption'])   
 
-        st.write("---")
-        st.write("## ML Q&A using ELSER Results")
-        answer = es_query.ask_question(body, query)
-        st.write(f"**{answer}**")
+        # st.write("---")
+        # st.write("## ML Q&A using ELSER Results")
+        # answer = es_query.ask_question(body, query)
+        # st.write(f"**{answer}**")
 
         st.write("---")
         st.write("## OpenAI Q&A using ELSER Results")
 
-        prompt = f"Answer this question with a short answer: {query}\nUsing only the information from this Elastic Doc: {body}\nIf the answer is not contained in the supplied doc reply '{PROMPT_FAILED}' and nothing else"
-        answer, time_taken, cost = llm.query(prompt)
+        answer, time_taken, cost = llm.ask_question(body, query)
         
-        if PROMPT_FAILED in answer:
+        if llm.PROMPT_FAILED in answer:
             st.write("Insufficient data in Elasticsearch results")
         else:
             st.write(f"**{answer.strip()}**")
             st.write(f"\nCost: ${cost:0.6f}, ChatGPT response time: {time_taken:0.4f} sec")
-
-
