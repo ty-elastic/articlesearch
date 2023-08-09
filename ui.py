@@ -4,6 +4,7 @@ import es_query
 import es_ml
 import urllib.parse
 import re
+import os 
 
 ELASTIC_LOGO = 'https://images.contentstack.io/v3/assets/bltefdd0b53724fa2ce/blt601c406b0b5af740/620577381692951393fdf8d6/elastic-logo-cluster.svg'
 APP_NAME = "Content Search Demo"
@@ -85,13 +86,14 @@ with st.form("chat_form"):
                 with cols[i]:
                     st.image(fig['url'], caption=fig['caption'])   
 
-        st.write("---")
-        st.write("## OpenAI Q&A using ELSER Results")
+        if 'OPENAI_API_KEY' in os.environ:
+            st.write("---")
+            st.write("## OpenAI Q&A using ELSER Results")
 
-        answer, time_taken, cost = llm.ask_question(body, query)
-        
-        if llm.PROMPT_FAILED in answer:
-            st.write("Insufficient data in Elasticsearch results")
-        else:
-            st.write(f"**{answer.strip()}**")
-            st.write(f"\nCost: ${cost:0.6f}, ChatGPT response time: {time_taken:0.4f} sec")
+            answer, time_taken, cost = llm.ask_question(body, query)
+            
+            if llm.PROMPT_FAILED in answer:
+                st.write("Insufficient data in Elasticsearch results")
+            else:
+                st.write(f"**{answer.strip()}**")
+                st.write(f"\nCost: ${cost:0.6f}, ChatGPT response time: {time_taken:0.4f} sec")

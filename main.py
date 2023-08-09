@@ -3,18 +3,16 @@ import es_index
 
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("--article", help="input url (single doc)")
-    parser.add_argument("--crawl", help="url to crawl (multi-doc)")
+    parser.add_argument("--crawl_url", help="url to crawl (multi-doc)")
     parser.add_argument("--crawl_aref_class", default="newsreleaseconsolidatelink", help="class of a references to crawl")
-
+    parser.add_argument("--article_section_class", default="release-body", help="class of a references to crawl")
     parser.add_argument("--source", help="document source")
-    parser.add_argument("--disable_write", action='store_true', default=False, help="disable writing (test mode)")
     args = parser.parse_args()
     config = vars(args)
     print(config)
-    process(args.article, args.crawl, args.crawl_aref_class, args.source, args.disable_write == False)
+    process(args.crawl_url, args.crawl_aref_class, args.article_section_class, args.source)
 
-def process(article, crawl, crawl_aref_class, source, enable_write):
-    es_index.crawl_articles(crawl, crawl_aref_class, source)
+def process(crawl_url, crawl_aref_class, article_section_class, source):
+    es_index.crawl_articles(crawl_url, crawl_aref_class, article_section_class, source)
 
 main()

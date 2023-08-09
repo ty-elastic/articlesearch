@@ -80,11 +80,11 @@ def index_article_with_figures(url, source):
     print(docs)
     return docs
 
-def index_article(url, source):
+def index_article(url, source, section_class):
     page = requests.get(url, timeout=30, headers=HTTP_HEADERS)
     #print(page)
     soup = BeautifulSoup(page.content, "html.parser")
-    results = soup.find_all("section", {"class": "release-body"})
+    results = soup.find_all("section", {"class": section_class})
 
     title = soup.find("title")
     title_text =title.text.strip()
@@ -102,15 +102,15 @@ def index_article(url, source):
     print(docs)
     return docs
 
-def crawl_articles(url, aref_class, source):
-    parsed_url = urllib.parse.urlparse(url)
+def crawl_articles(crawl_url, crawl_aref_class, article_section_class, source):
+    parsed_url = urllib.parse.urlparse(crawl_url)
 
-    page = requests.get(url, timeout=30, headers=HTTP_HEADERS)
+    page = requests.get(crawl_url, timeout=30, headers=HTTP_HEADERS)
     soup = BeautifulSoup(page.content, "html.parser")
-    results = soup.findAll("a", {"class": aref_class})
+    results = soup.findAll("a", {"class": crawl_aref_class})
     for result in results:
         url_path = urllib.parse.urlparse(result['href'])
         url_to_index = parsed_url.scheme + "://" + parsed_url.netloc + url_path.path
         print (f"indexing: {url_to_index}")
-        docs = index_article(url_to_index, source)
+        docs = index_article(url_to_index, source, article_section_class)
         add_docs(docs)
